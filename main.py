@@ -1,14 +1,17 @@
+import streamlit as st
+from datetime import datetime
 from date_time_manager import get_timezone_from_city, display_date_time, get_latitude_and_longitude
 from openweathermap_manager import OpenWeatherMapManager
-import pandas as pd
 
-user_input = input("Please enter a city name: ")
-print(get_timezone_from_city(user_input))
-print(display_date_time(get_timezone_from_city(user_input), get_timezone_from_city(user_input)))
+user_input = st.text_input("Please enter a city name:")
 
-latitude, longitude = get_latitude_and_longitude(user_input)
-openweathermap_manager = OpenWeatherMapManager(latitude, longitude)
+if user_input:
+    timezone = get_timezone_from_city(user_input)
+    st.write(f"Timezone: {timezone}")
+    st.write(f"Current Date and Time in {user_input}: {display_date_time(timezone, timezone)}")
 
-weather_http_response = openweathermap_manager.get_weather_data()
-current_df = pd.json_normalize(weather_http_response.json()['current'])
-print(current_df)
+    latitude, longitude = get_latitude_and_longitude(user_input)
+    openweathermap_manager = OpenWeatherMapManager(latitude, longitude, datetime.now())
+    openweathermap_manager.publish_weather_data()
+
+
