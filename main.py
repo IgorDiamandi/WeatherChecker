@@ -4,7 +4,7 @@ from datetime import datetime
 from location_manager import LocationManager, display_date_time, extract_city_name, find_city_by_name
 from openweathermap_manager import OpenWeatherMapManager
 
-with open('unique_cities.json', 'r', encoding='UTF-8') as f:
+with open('cities.json', 'r', encoding='UTF-8') as f:
     cities_data = json.load(f)
 
 city_names = {}
@@ -37,6 +37,7 @@ if user_input:
         find_city_by_name(city_name, cities_data)['lng'])
 
     timezone = location.get_timezone()
+    print(timezone)
 
     st.write(f"Timezone: {timezone}")
     st.write(f"Current Date and Time in {user_input}: {display_date_time(timezone, timezone)}")

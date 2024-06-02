@@ -35,12 +35,3 @@ class OpenWeatherMapManager:
         st.write(f"Humidity: {humidity} %")
         st.write(f"Visibility: {visibility} m")
         st.write(f"Wind: {wind} m/s")
-
-        #print(f"Sunrise at: {datetime.fromtimestamp(sunrise)}")
-        #print(f"Sunset at: {datetime.fromtimestamp(sunset)}")
-        #print(f"Temperature: {temp} °C")
-        #print(f"Feels Like: {feels_like} °C")
-        #print(f"Pressure: {pressure} mm")
-        #print(f"Humidity: {humidity} %")
-        #print(f"Visibility: {visibility} m")
-        #print(f"Wind: {wind} m/s")
