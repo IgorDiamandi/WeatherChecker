@@ -26,8 +26,8 @@ class LocationManager:
 
 
 def display_date_time(user_timezone, location_timezone=None):
-      user_time = datetime.now(pytz.timezone(user_timezone))
-      if location_timezone:
+    user_time = datetime.now(pytz.timezone(user_timezone))
+    if location_timezone:
         location_time = user_time.astimezone(pytz.timezone(location_timezone))
         formatted_location_time = location_time.strftime("%A, %B %d, %Y, %I:%M %p")
         return f"Date and time in {location_timezone}: {formatted_location_time}"
