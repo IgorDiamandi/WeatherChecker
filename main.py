@@ -37,7 +37,6 @@ if user_input:
         find_city_by_name(city_name, cities_data)['lng'])
 
     timezone = location.get_timezone()
-    print(timezone)
 
     st.write(f"Timezone: {timezone}")
     st.write(f"Current Date and Time in {user_input}: {display_date_time(timezone, timezone)}")
