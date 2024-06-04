@@ -31,9 +31,9 @@ class OpenWeatherMapManager:
         visibility = weather_http_response['current']['visibility']
         wind = weather_http_response['current']['wind_speed']
 
-        st.write(f"Current date and time at {self.selected_location} is: {datetime.fromtimestamp(current_time)}")
-        st.write(f"Sunrise at: {datetime.fromtimestamp(sunrise)}")
-        st.write(f"Sunset at: {datetime.fromtimestamp(sunset)}")
+        st.write(f"Current date and time at {self.selected_location} is: {datetime.utcfromtimestamp(current_time)}")
+        st.write(f"Sunrise at: {datetime.utcfromtimestamp(sunrise)}")
+        st.write(f"Sunset at: {datetime.utcfromtimestamp(sunset)}")
         st.write(f"Temperature: {temp} °C")
         st.write(f"Feels Like: {feels_like} °C")
         st.write(f"Pressure: {pressure} mm")
