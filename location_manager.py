@@ -25,12 +25,13 @@ class LocationManager:
             return "Incorrect city input"
 
 
-def display_date_time(user_timezone, location_timezone=None):
-    user_time = datetime.now(pytz.timezone(user_timezone))
-    if location_timezone:
-        location_time = user_time.astimezone(pytz.timezone(location_timezone))
-        formatted_location_time = location_time.strftime("%A, %B %d, %Y, %I:%M %p")
-        return f"Date and time in {location_timezone}: {formatted_location_time}"
+def get_local_time(timezone_str):
+    try:
+        timezone = pytz.timezone(timezone_str)
+        current_time = datetime.now(timezone)
+        return current_time.strftime('%Y-%m-%d %H:%M:%S %Z%z')
+    except pytz.UnknownTimeZoneError:
+        return f"Unknown timezone: {timezone_str}"
 
 
 def extract_city_name(city_with_country):

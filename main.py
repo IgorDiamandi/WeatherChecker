@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime
-from location_manager import LocationManager, display_date_time, extract_city_name, find_city_by_name
+from location_manager import LocationManager, extract_city_name, find_city_by_name, get_local_time
 from openweathermap_manager import OpenWeatherMapManager
 
 with open('cities.json', 'r', encoding='UTF-8') as f:
@@ -24,9 +24,7 @@ for city_name, countries in city_names.items():
     else:
         cities.append(city_name)
 
-
 user_input = st.selectbox("Select a city:", options=cities)
-
 
 if user_input:
     city_name = extract_city_name(user_input)
@@ -39,7 +37,7 @@ if user_input:
     timezone = location.get_timezone()
 
     st.write(f"Timezone: {timezone}")
-    st.write(f"Current Date and Time in {user_input}: {display_date_time(timezone, timezone)}")
 
-    openweathermap_manager = OpenWeatherMapManager(location.latitude, location.longitude, datetime.now())
+    openweathermap_manager = OpenWeatherMapManager(location.latitude, location.longitude, datetime.now(),
+                                                   user_input)
     openweathermap_manager.publish_weather_data()

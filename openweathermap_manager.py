@@ -4,11 +4,12 @@ from datetime import datetime
 
 
 class OpenWeatherMapManager:
-    def __init__(self, latitude, longitude, date):
+    def __init__(self, latitude, longitude, date, selected_location):
         self.api_key = '85022b8d0d20c6093a527c3ba8bb0c4f'
         self.latitude = latitude
         self.longitude = longitude
         self.date = date
+        self.selected_location = selected_location
 
     def publish_weather_data(self):
         weather_http_response = get(f"https://api.openweathermap.org/data/3.0/onecall?"
@@ -18,6 +19,9 @@ class OpenWeatherMapManager:
                                     f"&date={self.date}"
                                     f"&units=metric&appid={self.api_key}").json()
 
+        print(weather_http_response)
+
+        current_time = weather_http_response['current']['dt']
         sunrise = weather_http_response['current']['sunrise']
         sunset = weather_http_response['current']['sunset']
         temp = weather_http_response['current']['temp']
@@ -27,6 +31,7 @@ class OpenWeatherMapManager:
         visibility = weather_http_response['current']['visibility']
         wind = weather_http_response['current']['wind_speed']
 
+        st.write(f"Current date and time at {self.selected_location} is: {datetime.fromtimestamp(current_time)}")
         st.write(f"Sunrise at: {datetime.fromtimestamp(sunrise)}")
         st.write(f"Sunset at: {datetime.fromtimestamp(sunset)}")
         st.write(f"Temperature: {temp} °C")
