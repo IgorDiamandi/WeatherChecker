@@ -1,7 +1,7 @@
-import timezonefinder as tf
+from timezonefinder import TimezoneFinder
+from geopy.geocoders import Nominatim
 import pytz
 from datetime import datetime
-from geopy.geocoders import Nominatim
 
 
 class LocationManager:
@@ -12,24 +12,36 @@ class LocationManager:
         self.latitude = latitude
 
     def get_timezone(self):
-        geolocator = Nominatim(user_agent="WeatherChecker")
-        location = geolocator.geocode(self.city)
+        try:
+            geolocator = Nominatim(user_agent="city_timezone_finder")
+            tf = TimezoneFinder()
+            city_name = f"{self.city}, {self.country}"
 
-        if location:
-            timezone_str = tf.TimezoneFinder().timezone_at(lng=float(self.longitude), lat=float(self.latitude))
-            if timezone_str:
-                return timezone_str
-            else:
-                return "Time zone not found for this city"
-        else:
-            return "Incorrect city input"
+            location = geolocator.geocode(city_name)
+            if not location:
+                raise ValueError(f"Could not find the city: {city_name}")
+
+            timezone_str = tf.timezone_at(lng=location.longitude, lat=location.latitude)
+            if not timezone_str:
+                raise ValueError(f"Could not determine the timezone for the city: {city_name}")
+
+            return timezone_str
+
+        except Exception as e:
+            return str(e)
 
 
-def get_local_time(timezone_str):
+def convert_timestamp_to_timezone(timestamp, timezone_str):
     try:
-        timezone = pytz.timezone(timezone_str)
-        current_time = datetime.now(timezone)
-        return current_time.strftime('%Y-%m-%d %H:%M:%S %Z%z')
+        pytz.timezone(timezone_str)
+        if type(timestamp) is int:
+            naive_datetime = datetime.utcfromtimestamp(timestamp)
+            utc_datetime = pytz.utc.localize(naive_datetime)
+            target_timezone = pytz.timezone(timezone_str)
+            localized_datetime = utc_datetime.astimezone(target_timezone)
+            return localized_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            return timestamp
     except pytz.UnknownTimeZoneError:
         return f"Unknown timezone: {timezone_str}"
 

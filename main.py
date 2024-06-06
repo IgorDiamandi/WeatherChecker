@@ -1,7 +1,7 @@
 import streamlit as st
 import json
 from datetime import datetime
-from location_manager import LocationManager, extract_city_name, find_city_by_name, get_local_time
+from location_manager import LocationManager, extract_city_name, find_city_by_name
 from openweathermap_manager import OpenWeatherMapManager
 
 with open('cities.json', 'r', encoding='UTF-8') as f:
@@ -35,9 +35,9 @@ if user_input:
         find_city_by_name(city_name, cities_data)['lng'])
 
     timezone = location.get_timezone()
-
     st.write(f"Timezone: {timezone}")
 
     openweathermap_manager = OpenWeatherMapManager(location.latitude, location.longitude, datetime.now(),
-                                                   user_input)
+                                                   user_input, timezone)
     openweathermap_manager.publish_weather_data()
+
