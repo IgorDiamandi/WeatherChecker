@@ -3,16 +3,34 @@ from geopy.geocoders import Nominatim
 import pytz
 from datetime import datetime
 
+from urllib3.exceptions import ReadTimeoutError
+
 
 class LocationManager:
     def __init__(self, city, country):
-        geolocator = Nominatim(user_agent="city_timezone_finder")
         self.city = city
         self.country = country
-        self.longitude = geolocator.geocode(f"{self.city}, {self.country}").longitude
-        self.latitude = geolocator.geocode(f"{self.city}, {self.country}").latitude
+        self.longitude = self.get_location().longitude
+        self.latitude = self.get_location().latitude
+
+    def get_location(self):
+        retries = 3
+        for attempt in range(retries):
+            try:
+                geolocator = Nominatim(user_agent="city_timezone_finder")
+                location = geolocator.geocode(f"{self.city}, {self.country}")
+                if location:
+                    break
+            except ReadTimeoutError:
+                if attempt < retries - 1:
+                    continue
+                else:
+                    raise
+
+        return location
 
     def get_timezone(self):
+
         try:
             tf = TimezoneFinder()
             city_name = f"{self.city}, {self.country}"
