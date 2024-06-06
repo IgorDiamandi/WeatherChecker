@@ -5,23 +5,19 @@ from datetime import datetime
 
 
 class LocationManager:
-    def __init__(self, city, country, longitude, latitude):
+    def __init__(self, city, country):
+        geolocator = Nominatim(user_agent="city_timezone_finder")
         self.city = city
         self.country = country
-        self.longitude = longitude
-        self.latitude = latitude
+        self.longitude = geolocator.geocode(f"{self.city}, {self.country}").longitude
+        self.latitude = geolocator.geocode(f"{self.city}, {self.country}").latitude
 
     def get_timezone(self):
         try:
-            geolocator = Nominatim(user_agent="city_timezone_finder")
             tf = TimezoneFinder()
             city_name = f"{self.city}, {self.country}"
 
-            location = geolocator.geocode(city_name)
-            if not location:
-                raise ValueError(f"Could not find the city: {city_name}")
-
-            timezone_str = tf.timezone_at(lng=location.longitude, lat=location.latitude)
+            timezone_str = tf.timezone_at(lng=self.longitude, lat=self.latitude)
             if not timezone_str:
                 raise ValueError(f"Could not determine the timezone for the city: {city_name}")
 

@@ -30,9 +30,7 @@ if user_input:
     city_name = extract_city_name(user_input)
     location = LocationManager(
         find_city_by_name(city_name, cities_data)['name'],
-        find_city_by_name(city_name, cities_data)['country'],
-        find_city_by_name(city_name, cities_data)['lat'],
-        find_city_by_name(city_name, cities_data)['lng'])
+        find_city_by_name(city_name, cities_data)['country'])
 
     timezone = location.get_timezone()
     st.write(f"Timezone: {timezone}")
