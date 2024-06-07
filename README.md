@@ -24,7 +24,8 @@
 
 	User Input:
 		Users can input a city name into the "Select a city" combo selector control. 
-		This control supports autosuggestions and will display available city names as the user types. If a non-existent city name is provided, a default city will be selected.
+		This control supports autosuggestions and will display available city names as the user types. If a non-existent city name is provided, 
+		a default city will be selected.
 
 	Modules:
 		cities.json: Stores all available city and country names.
