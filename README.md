@@ -7,7 +7,6 @@
 
 	Features:
 		WeatherChecker provides the following information for a chosen city:
-
 			Time zone
 			Current local time
 			Local sunrise and sunset times
@@ -34,6 +33,7 @@
 		city, country, longitude, and latitude. This module includes functions and methods for time zone and location operations.
 
 		OpenWeatherMapManager: Responsible for retrieving weather data from OpenWeatherMap and publishing it.
+
 	Executable: 
 		The main script is main.py.
 
